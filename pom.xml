@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
     <groupId>cn.mesad</groupId>
     <artifactId>mesad</artifactId>
     <version>3.8.9</version>
@@ -11,7 +11,7 @@
     <name>mesad</name>
     <url>http://www.ruoyi.vip</url>
     <description>Mes管理系统</description>
-    
+
     <properties>
         <mesad.version>3.8.9</mesad.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -218,6 +218,13 @@
                 <version>${mesad.version}</version>
             </dependency>
 
+            <!--mes模块-->
+            <dependency>
+                <groupId>cn.mesad</groupId>
+                <artifactId>mesad-mes</artifactId>
+                <version>${mesad.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -228,6 +235,7 @@
         <module>mesad-quartz</module>
         <module>mesad-generator</module>
         <module>mesad-common</module>
+        <module>mesad-mes</module>
     </modules>
     <packaging>pom</packaging>
 
