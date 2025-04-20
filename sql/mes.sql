@@ -244,7 +244,24 @@ create table mes_defect_handling (
   update_time        datetime                                   comment '更新时间',
   primary key (handling_id)
 ) engine=innodb auto_increment=100 comment = '不合格品处理表';
-
+-- ----------------------------
+-- 客户表
+-- ----------------------------
+drop table if exists mes_customer;
+create table mes_customer (
+  customer_id        bigint(20)      not null auto_increment    comment '客户ID',
+  customer_name      varchar(100)    not null                   comment '客户名称',
+  contact_phone      varchar(20)     default null               comment '联系电话',
+  email              varchar(100)    default null               comment '电子邮箱',
+  address            varchar(200)    default null               comment '地址',
+  status             char(1)         default '1'                comment '状态（0禁用 1启用）',
+  remark             varchar(500)    default null               comment '备注',
+  create_by          varchar(64)     default ''                 comment '创建者',
+  create_time        datetime                                   comment '创建时间',
+  update_by          varchar(64)     default ''                 comment '更新者',
+  update_time        datetime                                   comment '更新时间',
+  primary key (customer_id)
+) engine=innodb auto_increment=100 comment = '客户表';
 -- ----------------------------
 -- 初始化-基础数据
 -- ----------------------------
