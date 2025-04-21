@@ -244,6 +244,54 @@ create table mes_defect_handling (
   update_time        datetime                                   comment '更新时间',
   primary key (handling_id)
 ) engine=innodb auto_increment=100 comment = '不合格品处理表';
+-- ----------------------------
+-- 客户表
+-- ----------------------------
+drop table if exists mes_customer;
+create table mes_customer (
+  customer_id        bigint(20)      not null auto_increment    comment '客户ID',
+  customer_name      varchar(100)    not null                   comment '客户名称',
+  contact_phone      varchar(20)     default null               comment '联系电话',
+  email              varchar(100)    default null               comment '电子邮箱',
+  address            varchar(200)    default null               comment '地址',
+  status             char(1)         default '1'                comment '状态（0禁用 1启用）',
+  remark             varchar(500)    default null               comment '备注',
+  create_by          varchar(64)     default ''                 comment '创建者',
+  create_time        datetime                                   comment '创建时间',
+  update_by          varchar(64)     default ''                 comment '更新者',
+  update_time        datetime                                   comment '更新时间',
+  primary key (customer_id)
+) engine=innodb auto_increment=100 comment = '客户表';
+-- ----------------------------
+-- 产品表
+-- ----------------------------
+drop table if exists mes_product;
+create table mes_product (
+  product_id         bigint(20)      not null auto_increment    comment '产品ID',
+  product_code       varchar(50)     not null                   comment '产品编码',
+  product_name       varchar(100)    not null                   comment '产品名称',
+  category           varchar(50)     default null               comment '产品类别',
+  specification      varchar(200)    default null               comment '规格型号',
+  unit               varchar(20)     not null                   comment '单位',
+  price              decimal(10,2)   default 0.00               comment '单价',
+  status             char(1)         default '1'                comment '状态（0禁用 1启用）',
+  remark             varchar(500)    default null               comment '备注',
+  create_by          varchar(64)     default ''                 comment '创建者',
+  create_time        datetime                                   comment '创建时间',
+  update_by          varchar(64)     default ''                 comment '更新者',
+  update_time        datetime                                   comment '更新时间',
+  primary key (product_id)
+) engine=innodb auto_increment=100 comment = '产品表';
+
+-- ----------------------------
+-- 插入测试数据
+-- ----------------------------
+insert into mes_product (product_code, product_name, category, specification, unit, price, status, remark, create_by, create_time) values
+('PRD001', '测试产品1', '电子', '规格A', '个', 100.00, '1', '测试数据1', 'admin', now()),
+('PRD002', '测试产品2', '机械', '规格B', '件', 200.00, '1', '测试数据2', 'admin', now()),
+('PRD003', '测试产品3', '化工', '规格C', '公斤', 50.00, '1', '测试数据3', 'admin', now()),
+('PRD004', '测试产品4', '电子', '规格D', '个', 150.00, '1', '测试数据4', 'admin', now()),
+('PRD005', '测试产品5', '机械', '规格E', '件', 300.00, '1', '测试数据5', 'admin', now());
 
 -- ----------------------------
 -- 初始化-基础数据
