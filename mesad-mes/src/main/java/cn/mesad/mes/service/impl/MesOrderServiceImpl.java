@@ -2,9 +2,12 @@ package cn.mesad.mes.service.impl;
 
 import java.util.List;
 import cn.mesad.common.utils.DateUtils;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import cn.mesad.common.utils.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
+import cn.mesad.mes.domain.MesOrderDetail;
 import cn.mesad.mes.mapper.MesOrderMapper;
 import cn.mesad.mes.domain.MesOrder;
 import cn.mesad.mes.service.IMesOrderService;
@@ -13,7 +16,7 @@ import cn.mesad.mes.service.IMesOrderService;
  * 订单管理Service业务层处理
  * 
  * @author ruoyi
- * @date 2025-04-20
+ * @date 2025-04-21
  */
 @Service
 public class MesOrderServiceImpl implements IMesOrderService 
@@ -51,11 +54,14 @@ public class MesOrderServiceImpl implements IMesOrderService
      * @param mesOrder 订单管理
      * @return 结果
      */
+    @Transactional
     @Override
     public int insertMesOrder(MesOrder mesOrder)
     {
         mesOrder.setCreateTime(DateUtils.getNowDate());
-        return mesOrderMapper.insertMesOrder(mesOrder);
+        int rows = mesOrderMapper.insertMesOrder(mesOrder);
+        insertMesOrderDetail(mesOrder);
+        return rows;
     }
 
     /**
@@ -64,10 +70,13 @@ public class MesOrderServiceImpl implements IMesOrderService
      * @param mesOrder 订单管理
      * @return 结果
      */
+    @Transactional
     @Override
     public int updateMesOrder(MesOrder mesOrder)
     {
         mesOrder.setUpdateTime(DateUtils.getNowDate());
+        mesOrderMapper.deleteMesOrderDetailByOrderId(mesOrder.getOrderId());
+        insertMesOrderDetail(mesOrder);
         return mesOrderMapper.updateMesOrder(mesOrder);
     }
 
@@ -77,9 +86,11 @@ public class MesOrderServiceImpl implements IMesOrderService
      * @param orderIds 需要删除的订单管理主键
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteMesOrderByOrderIds(Long[] orderIds)
     {
+        mesOrderMapper.deleteMesOrderDetailByOrderIds(orderIds);
         return mesOrderMapper.deleteMesOrderByOrderIds(orderIds);
     }
 
@@ -89,9 +100,35 @@ public class MesOrderServiceImpl implements IMesOrderService
      * @param orderId 订单管理主键
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteMesOrderByOrderId(Long orderId)
     {
+        mesOrderMapper.deleteMesOrderDetailByOrderId(orderId);
         return mesOrderMapper.deleteMesOrderByOrderId(orderId);
+    }
+
+    /**
+     * 新增订单明细信息
+     * 
+     * @param mesOrder 订单管理对象
+     */
+    public void insertMesOrderDetail(MesOrder mesOrder)
+    {
+        List<MesOrderDetail> mesOrderDetailList = mesOrder.getMesOrderDetailList();
+        Long orderId = mesOrder.getOrderId();
+        if (StringUtils.isNotNull(mesOrderDetailList))
+        {
+            List<MesOrderDetail> list = new ArrayList<MesOrderDetail>();
+            for (MesOrderDetail mesOrderDetail : mesOrderDetailList)
+            {
+                mesOrderDetail.setOrderId(orderId);
+                list.add(mesOrderDetail);
+            }
+            if (list.size() > 0)
+            {
+                mesOrderMapper.batchMesOrderDetail(list);
+            }
+        }
     }
 }

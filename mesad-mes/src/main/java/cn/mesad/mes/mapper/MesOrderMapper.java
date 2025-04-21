@@ -2,13 +2,16 @@ package cn.mesad.mes.mapper;
 
 import java.util.List;
 import cn.mesad.mes.domain.MesOrder;
+import cn.mesad.mes.domain.MesOrderDetail;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 订单管理Mapper接口
  * 
  * @author ruoyi
- * @date 2025-04-20
+ * @date 2025-04-21
  */
+@Mapper
 public interface MesOrderMapper 
 {
     /**
@@ -58,4 +61,29 @@ public interface MesOrderMapper
      * @return 结果
      */
     public int deleteMesOrderByOrderIds(Long[] orderIds);
+
+    /**
+     * 批量删除订单明细
+     * 
+     * @param orderIds 需要删除的数据主键集合
+     * @return 结果
+     */
+    public int deleteMesOrderDetailByOrderIds(Long[] orderIds);
+    
+    /**
+     * 批量新增订单明细
+     * 
+     * @param mesOrderDetailList 订单明细列表
+     * @return 结果
+     */
+    public int batchMesOrderDetail(List<MesOrderDetail> mesOrderDetailList);
+    
+
+    /**
+     * 通过订单管理主键删除订单明细信息
+     * 
+     * @param orderId 订单管理ID
+     * @return 结果
+     */
+    public int deleteMesOrderDetailByOrderId(Long orderId);
 }

@@ -1,6 +1,7 @@
 package cn.mesad.mes.domain;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,7 +13,7 @@ import cn.mesad.common.core.domain.BaseEntity;
  * 订单管理对象 mes_order
  * 
  * @author ruoyi
- * @date 2025-04-20
+ * @date 2025-04-21
  */
 public class MesOrder extends BaseEntity
 {
@@ -36,6 +37,7 @@ public class MesOrder extends BaseEntity
     private Long productId;
 
     /** 产品编码 */
+    @Excel(name = "产品编码")
     private String productCode;
 
     /** 产品名称 */
@@ -50,24 +52,24 @@ public class MesOrder extends BaseEntity
     @Excel(name = "单位")
     private String unit;
 
-    /** 计划开始时间 */
+    /** 计划开始 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "计划开始时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "计划开始", width = 30, dateFormat = "yyyy-MM-dd")
     private Date planStartTime;
 
-    /** 计划结束时间 */
+    /** 计划结束 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "计划结束时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "计划结束", width = 30, dateFormat = "yyyy-MM-dd")
     private Date planEndTime;
 
-    /** 实际开始时间 */
+    /** 实际开始 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "实际开始时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "实际开始", width = 30, dateFormat = "yyyy-MM-dd")
     private Date actualStartTime;
 
-    /** 实际结束时间 */
+    /** 实际结束 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "实际结束时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "实际结束", width = 30, dateFormat = "yyyy-MM-dd")
     private Date actualEndTime;
 
     /** 优先级 */
@@ -77,6 +79,9 @@ public class MesOrder extends BaseEntity
     /** 订单状态（0待排产 1已排产 2生产中 3已完成 4已取消） */
     @Excel(name = "订单状态", readConverterExp = "0=待排产,1=已排产,2=生产中,3=已完成,4=已取消")
     private String orderStatus;
+
+    /** 订单明细信息 */
+    private List<MesOrderDetail> mesOrderDetailList;
 
     public void setOrderId(Long orderId) 
     {
@@ -228,6 +233,16 @@ public class MesOrder extends BaseEntity
         return orderStatus;
     }
 
+    public List<MesOrderDetail> getMesOrderDetailList()
+    {
+        return mesOrderDetailList;
+    }
+
+    public void setMesOrderDetailList(List<MesOrderDetail> mesOrderDetailList)
+    {
+        this.mesOrderDetailList = mesOrderDetailList;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -251,6 +266,7 @@ public class MesOrder extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
+            .append("mesOrderDetailList", getMesOrderDetailList())
             .toString();
     }
 }

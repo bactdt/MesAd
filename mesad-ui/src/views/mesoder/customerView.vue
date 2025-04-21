@@ -70,6 +70,9 @@
 <script setup name="Customer">
 import { listCustomer, getCustomer, delCustomer, addCustomer, updateCustomer } from "@/api/customer/customer";
 
+// 定义emit事件
+const emit = defineEmits(['select']);
+
 const { proxy } = getCurrentInstance();
 const { sys_job_status } = proxy.useDict('sys_job_status');
 
@@ -161,8 +164,10 @@ function handleAdd() {
 }
 
 /** 传值 */
+/** 选择客户操作 */
 function handleSelect(row) {
-  proxy.$emit('select', row);
+  // 向父组件发送选中的客户信息
+  emit('select', row);
 }
 
 /** 提交按钮 */
