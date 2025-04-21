@@ -86,13 +86,7 @@ public class MesOrder extends BaseEntity
     @Excel(name = "订单状态", readConverterExp = "0=待排产,1=已排产,2=生产中,3=已完成,4=已取消")
     private String orderStatus;
 
-//    @PrePersist
-//    public void prePersist() {
-//        if (StringUtils.isEmpty(this.orderCode)) {
-//            this.orderCode = "ORD" + RandomStringUtils.random(9);
-//
-//        }
-//    }
+
 
     /** 订单明细信息 */
     private List<MesOrderDetail> mesOrderDetailList;
@@ -112,7 +106,7 @@ public class MesOrder extends BaseEntity
         this.orderCode = orderCode;
     }
 
-    public String getOrderCode() 
+    public String getOrderCode()
     {
         return orderCode;
     }
