@@ -9,6 +9,7 @@
         <version>3.8.9</version>
     </parent>
 
+
     <groupId>cn.mesad</groupId>
     <artifactId>mesad-mes</artifactId>
 
@@ -21,6 +22,10 @@
         <dependency>
             <groupId>cn.mesad</groupId>
             <artifactId>mesad-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
     </dependencies>
 

@@ -2,9 +2,12 @@ package cn.mesad.mes.service.impl;
 
 import java.util.List;
 import cn.mesad.common.utils.DateUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Random;
+
 import cn.mesad.common.utils.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import cn.mesad.mes.domain.MesOrderDetail;
@@ -59,6 +62,9 @@ public class MesOrderServiceImpl implements IMesOrderService
     public int insertMesOrder(MesOrder mesOrder)
     {
         mesOrder.setCreateTime(DateUtils.getNowDate());
+       if (StringUtils.isEmpty(mesOrder.getOrderCode())) {
+            mesOrder.setOrderCode("DDGL"+ RandomStringUtils.randomNumeric(9));
+        }
         int rows = mesOrderMapper.insertMesOrder(mesOrder);
         insertMesOrderDetail(mesOrder);
         return rows;

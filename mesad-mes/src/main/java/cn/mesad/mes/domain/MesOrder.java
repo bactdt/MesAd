@@ -3,12 +3,17 @@ package cn.mesad.mes.domain;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Date;
+import java.util.Random;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.oracle.webservices.internal.api.message.PropertySet;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import cn.mesad.common.annotation.Excel;
 import cn.mesad.common.core.domain.BaseEntity;
-
+import javax.persistence.PrePersist;
 /**
  * 订单管理对象 mes_order
  * 
@@ -24,6 +29,7 @@ public class MesOrder extends BaseEntity
 
     /** 订单编号 */
     @Excel(name = "订单编号")
+
     private String orderCode;
 
     /** 客户ID */
@@ -79,6 +85,14 @@ public class MesOrder extends BaseEntity
     /** 订单状态（0待排产 1已排产 2生产中 3已完成 4已取消） */
     @Excel(name = "订单状态", readConverterExp = "0=待排产,1=已排产,2=生产中,3=已完成,4=已取消")
     private String orderStatus;
+
+//    @PrePersist
+//    public void prePersist() {
+//        if (StringUtils.isEmpty(this.orderCode)) {
+//            this.orderCode = "ORD" + RandomStringUtils.random(9);
+//
+//        }
+//    }
 
     /** 订单明细信息 */
     private List<MesOrderDetail> mesOrderDetailList;
