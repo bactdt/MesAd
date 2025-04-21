@@ -180,10 +180,13 @@
           <el-input v-model="form.orderCode" placeholder="请输入订单编号" />
         </el-form-item>
         <el-form-item label="客户ID" prop="customerId">
-          <el-input v-model="form.customerId" placeholder="请输入客户ID" />
+          <div style="display: flex; align-items: center;">
+            <el-input v-model="form.customerId" placeholder="请输入客户ID" disabled style="margin-right: 10px;"/>
+            <el-button type="primary" size="small"  @click="viewopen=true">选择客户</el-button>
+          </div>
         </el-form-item>
         <el-form-item label="客户名称" prop="customerName">
-          <el-input v-model="form.customerName" placeholder="请输入客户名称" />
+          <el-input v-model="form.customerName" placeholder="请输入客户名称" disabled/>
         </el-form-item>
         <el-form-item label="产品ID" prop="productId">
           <el-input v-model="form.productId" placeholder="请输入产品ID" />
@@ -256,12 +259,17 @@
         </div>
       </template>
     </el-dialog>
+    <el-dialog v-model="viewopen" title="选择客户">
+      <customerView @select="handleCustomerSelect">
+
+      </customerView>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="Order">
 import { listOrder, getOrder, delOrder, addOrder, updateOrder } from "@/api/mesoder/order";
-
+import customerView from "@/views/mesoder/order/customerView.vue";
 const { proxy } = getCurrentInstance();
 const { order_status } = proxy.useDict('order_status');
 
@@ -274,6 +282,7 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const viewopen = ref(false);
 
 const data = reactive({
   form: {},
@@ -322,6 +331,12 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
+
+function handleCustomerSelect(customer) {
+  form.value.customerId = customer.customerId;
+  form.value.customerName = customer.customerName;
+  viewopen.value = false;
+}
 
 /** 查询订单管理列表 */
 function getList() {
