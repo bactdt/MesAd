@@ -2,6 +2,7 @@ package cn.mesad.mes.mapper;
 
 import java.util.List;
 import cn.mesad.mes.domain.MesCustomer;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 客户Mapper接口
@@ -9,6 +10,7 @@ import cn.mesad.mes.domain.MesCustomer;
  * @author ruoyi
  * @date 2025-04-20
  */
+@Mapper
 public interface MesCustomerMapper 
 {
     /**
