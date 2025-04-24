@@ -133,7 +133,7 @@
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="productRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="产品编码" prop="productCode">
-          <el-input v-model="form.productCode" placeholder="请输入产品编码" />
+          <el-input v-model="form.productCode" placeholder="无需填写，自动生成" />
         </el-form-item>
         <el-form-item label="产品名称" prop="productName">
           <el-input v-model="form.productName" placeholder="请输入产品名称" />
@@ -203,9 +203,6 @@ const data = reactive({
     status: null,
   },
   rules: {
-    productCode: [
-      { required: true, message: "产品编码不能为空", trigger: "blur" }
-    ],
     productName: [
       { required: true, message: "产品名称不能为空", trigger: "blur" }
     ],

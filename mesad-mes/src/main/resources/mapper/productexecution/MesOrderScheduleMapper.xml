@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mesad.mes.mapper.MesOrderScheduleMapper">
+    
+    <resultMap type="MesOrderSchedule" id="MesOrderScheduleResult">
+        <result property="scheduleId"    column="schedule_id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="orderCode"    column="order_code"    />
+        <result property="detailId"    column="detail_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="productName"    column="product_name"    />
+        <result property="workshopId"    column="workshop_id"    />
+        <result property="workshopName"    column="workshop_name"    />
+        <result property="lineId"    column="line_id"    />
+        <result property="lineName"    column="line_name"    />
+        <result property="scheduleQuantity"    column="schedule_quantity"    />
+        <result property="unit"    column="unit"    />
+        <result property="planStartTime"    column="plan_start_time"    />
+        <result property="planEndTime"    column="plan_end_time"    />
+        <result property="actualStartTime"    column="actual_start_time"    />
+        <result property="actualEndTime"    column="actual_end_time"    />
+        <result property="scheduleStatus"    column="schedule_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMesOrderScheduleVo">
+        select schedule_id, order_id, order_code, detail_id, product_id, product_code, product_name, workshop_id, workshop_name, line_id, line_name, schedule_quantity, unit, plan_start_time, plan_end_time, actual_start_time, actual_end_time, schedule_status, remark, create_by, create_time, update_by, update_time from mes_order_schedule
+    </sql>
+
+    <select id="selectMesOrderScheduleList" parameterType="MesOrderSchedule" resultMap="MesOrderScheduleResult">
+        <include refid="selectMesOrderScheduleVo"/>
+        <where>  
+            <if test="orderCode != null  and orderCode != ''"> and order_code = #{orderCode}</if>
+            <if test="productCode != null  and productCode != ''"> and product_code = #{productCode}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="workshopName != null  and workshopName != ''"> and workshop_name like concat('%', #{workshopName}, '%')</if>
+            <if test="lineName != null  and lineName != ''"> and line_name like concat('%', #{lineName}, '%')</if>
+            <if test="scheduleStatus != null  and scheduleStatus != ''"> and schedule_status = #{scheduleStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectMesOrderScheduleByScheduleId" parameterType="Long" resultMap="MesOrderScheduleResult">
+        <include refid="selectMesOrderScheduleVo"/>
+        where schedule_id = #{scheduleId}
+    </select>
+
+    <insert id="insertMesOrderSchedule" parameterType="MesOrderSchedule" useGeneratedKeys="true" keyProperty="scheduleId">
+        insert into mes_order_schedule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="orderCode != null and orderCode != ''">order_code,</if>
+            <if test="detailId != null">detail_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productCode != null and productCode != ''">product_code,</if>
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="workshopId != null">workshop_id,</if>
+            <if test="workshopName != null and workshopName != ''">workshop_name,</if>
+            <if test="lineId != null">line_id,</if>
+            <if test="lineName != null and lineName != ''">line_name,</if>
+            <if test="scheduleQuantity != null">schedule_quantity,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="planStartTime != null">plan_start_time,</if>
+            <if test="planEndTime != null">plan_end_time,</if>
+            <if test="actualStartTime != null">actual_start_time,</if>
+            <if test="actualEndTime != null">actual_end_time,</if>
+            <if test="scheduleStatus != null">schedule_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="orderCode != null and orderCode != ''">#{orderCode},</if>
+            <if test="detailId != null">#{detailId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productCode != null and productCode != ''">#{productCode},</if>
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="workshopId != null">#{workshopId},</if>
+            <if test="workshopName != null and workshopName != ''">#{workshopName},</if>
+            <if test="lineId != null">#{lineId},</if>
+            <if test="lineName != null and lineName != ''">#{lineName},</if>
+            <if test="scheduleQuantity != null">#{scheduleQuantity},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="planStartTime != null">#{planStartTime},</if>
+            <if test="planEndTime != null">#{planEndTime},</if>
+            <if test="actualStartTime != null">#{actualStartTime},</if>
+            <if test="actualEndTime != null">#{actualEndTime},</if>
+            <if test="scheduleStatus != null">#{scheduleStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMesOrderSchedule" parameterType="MesOrderSchedule">
+        update mes_order_schedule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="orderCode != null and orderCode != ''">order_code = #{orderCode},</if>
+            <if test="detailId != null">detail_id = #{detailId},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productCode != null and productCode != ''">product_code = #{productCode},</if>
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="workshopId != null">workshop_id = #{workshopId},</if>
+            <if test="workshopName != null and workshopName != ''">workshop_name = #{workshopName},</if>
+            <if test="lineId != null">line_id = #{lineId},</if>
+            <if test="lineName != null and lineName != ''">line_name = #{lineName},</if>
+            <if test="scheduleQuantity != null">schedule_quantity = #{scheduleQuantity},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="planStartTime != null">plan_start_time = #{planStartTime},</if>
+            <if test="planEndTime != null">plan_end_time = #{planEndTime},</if>
+            <if test="actualStartTime != null">actual_start_time = #{actualStartTime},</if>
+            <if test="actualEndTime != null">actual_end_time = #{actualEndTime},</if>
+            <if test="scheduleStatus != null">schedule_status = #{scheduleStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where schedule_id = #{scheduleId}
+    </update>
+
+    <delete id="deleteMesOrderScheduleByScheduleId" parameterType="Long">
+        delete from mes_order_schedule where schedule_id = #{scheduleId}
+    </delete>
+
+    <delete id="deleteMesOrderScheduleByScheduleIds" parameterType="String">
+        delete from mes_order_schedule where schedule_id in 
+        <foreach item="scheduleId" collection="array" open="(" separator="," close=")">
+            #{scheduleId}
+        </foreach>
+    </delete>
+    <select id="selectMesOrderScheduleListChange" resultMap="MesOrderScheduleResult">
+        select
+            o.order_id as order_id,
+            o.order_code as order_code,
+            d.detail_id as detail_id,
+            d.product_id as product_id,
+            d.product_code as product_code,
+            d.product_name as product_name,
+            d.unit as unit
+        from
+            mes_order o
+                inner join
+            mes_order_detail d
+            on
+                o.order_id = d.order_id
+        <where>
+            <if test="mesOrder != null and mesOrder.orderId != null">and o.order_id = #{mesOrder.orderId}</if>
+            <if test="mesOrder != null and mesOrder.orderCode != null and mesOrder.orderCode != ''">and o.order_code = #{mesOrder.orderCode}</if>
+            <if test="mesOrderDetail != null and mesOrderDetail.detailId != null">and d.detail_id = #{mesOrderDetail.detailId}</if>
+            <if test="mesOrderDetail != null and mesOrderDetail.productId != null">and d.product_id = #{mesOrderDetail.productId}</if>
+            <if test="mesOrderDetail != null and mesOrderDetail.productCode != null and mesOrderDetail.productCode != ''">and d.product_code = #{mesOrderDetail.productCode}</if>
+        </where>
+    </select>
+</mapper>

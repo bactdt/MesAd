@@ -2,6 +2,8 @@ package cn.mesad.mes.service.impl;
 
 import java.util.List;
 import cn.mesad.common.utils.DateUtils;
+import cn.mesad.common.utils.StringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.mesad.mes.mapper.MesProductMapper;
@@ -54,6 +56,9 @@ public class MesProductServiceImpl implements IMesProductService
     public int insertMesProduct(MesProduct mesProduct)
     {
         mesProduct.setCreateTime(DateUtils.getNowDate());
+        if (StringUtils.isEmpty(mesProduct.getProductCode())) {
+            mesProduct.setProductCode("PRD" + RandomStringUtils.randomNumeric(3));
+        }
         return mesProductMapper.insertMesProduct(mesProduct);
     }
 

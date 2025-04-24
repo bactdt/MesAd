@@ -108,26 +108,6 @@
       <el-table-column label="产品名称" align="center" prop="productName" />
       <el-table-column label="订单数量" align="center" prop="orderQuantity" />
       <el-table-column label="单位" align="center" prop="unit" />
-      <el-table-column label="计划开始" align="center" prop="planStartTime" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.planStartTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="计划结束" align="center" prop="planEndTime" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.planEndTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="实际开始" align="center" prop="actualStartTime" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.actualStartTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="实际结束" align="center" prop="actualEndTime" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.actualEndTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="优先级" align="center" prop="priority" />
       <el-table-column label="订单状态" align="center" prop="orderStatus">
         <template #default="scope">
@@ -157,7 +137,7 @@
           <!-- 左侧表单 - 主要是可编辑字段 -->
           <el-col :span="12">
             <el-form-item label="订单编号" prop="orderCode">
-              <el-input v-model="form.orderCode" placeholder="请输入订单编号" />
+              <el-input v-model="form.orderCode" placeholder="无需编写自动生成" />
             </el-form-item>
             <el-form-item label="订单数量" prop="orderQuantity">
               <el-input v-model="form.orderQuantity" placeholder="请输入订单数量"/>

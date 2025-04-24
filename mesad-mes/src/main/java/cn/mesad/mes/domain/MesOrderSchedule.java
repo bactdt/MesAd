@@ -1,43 +1,35 @@
 package cn.mesad.mes.domain;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Date;
-import java.util.Random;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.oracle.webservices.internal.api.message.PropertySet;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import cn.mesad.common.annotation.Excel;
 import cn.mesad.common.core.domain.BaseEntity;
 
 /**
- * 订单管理对象 mes_order
+ * 订单排产对象 mes_order_schedule
  * 
  * @author ruoyi
- * @date 2025-04-21
+ * @date 2025-04-22
  */
-public class MesOrder extends BaseEntity
+public class MesOrderSchedule extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
+
+    /** 排产ID */
+    private Long scheduleId;
 
     /** 订单ID */
     private Long orderId;
 
     /** 订单编号 */
     @Excel(name = "订单编号")
-
     private String orderCode;
 
-    /** 客户ID */
-    private Long customerId;
-
-    /** 客户名称 */
-    @Excel(name = "客户名称")
-    private String customerName;
+    /** 订单明细ID */
+    private Long detailId;
 
     /** 产品ID */
     private Long productId;
@@ -50,46 +42,57 @@ public class MesOrder extends BaseEntity
     @Excel(name = "产品名称")
     private String productName;
 
-    /** 订单数量 */
-    @Excel(name = "订单数量")
-    private BigDecimal orderQuantity;
+    /** 车间ID */
+    private Long workshopId;
+
+    /** 车间名称 */
+    @Excel(name = "车间名称")
+    private String workshopName;
+
+    /** 生产线ID */
+    private Long lineId;
+
+    /** 生产线名称 */
+    @Excel(name = "生产线名称")
+    private String lineName;
+
+    /** 排产数量 */
+    @Excel(name = "排产数量")
+    private BigDecimal scheduleQuantity;
 
     /** 单位 */
     @Excel(name = "单位")
     private String unit;
 
-    /** 计划开始 */
+    /** 计划开始时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "计划开始", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "计划开始时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date planStartTime;
 
-    /** 计划结束 */
+    /** 计划结束时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "计划结束", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "计划结束时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date planEndTime;
 
-    /** 实际开始 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "实际开始", width = 30, dateFormat = "yyyy-MM-dd")
+    /** 实际开始时间 */
     private Date actualStartTime;
 
-    /** 实际结束 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "实际结束", width = 30, dateFormat = "yyyy-MM-dd")
+    /** 实际结束时间 */
     private Date actualEndTime;
 
-    /** 优先级 */
-    @Excel(name = "优先级")
-    private Long priority;
+    /** 排产状态 */
+    @Excel(name = "排产状态")
+    private String scheduleStatus;
 
-    /** 订单状态（0待排产 1已排产 2生产中 3已完成 4已取消） */
-    @Excel(name = "订单状态", readConverterExp = "0=待排产,1=已排产,2=生产中,3=已完成,4=已取消")
-    private String orderStatus;
+    public void setScheduleId(Long scheduleId) 
+    {
+        this.scheduleId = scheduleId;
+    }
 
-
-
-    /** 订单明细信息 */
-    private List<MesOrderDetail> mesOrderDetailList;
+    public Long getScheduleId() 
+    {
+        return scheduleId;
+    }
 
     public void setOrderId(Long orderId) 
     {
@@ -106,29 +109,19 @@ public class MesOrder extends BaseEntity
         this.orderCode = orderCode;
     }
 
-    public String getOrderCode()
+    public String getOrderCode() 
     {
         return orderCode;
     }
 
-    public void setCustomerId(Long customerId) 
+    public void setDetailId(Long detailId) 
     {
-        this.customerId = customerId;
+        this.detailId = detailId;
     }
 
-    public Long getCustomerId() 
+    public Long getDetailId() 
     {
-        return customerId;
-    }
-
-    public void setCustomerName(String customerName) 
-    {
-        this.customerName = customerName;
-    }
-
-    public String getCustomerName() 
-    {
-        return customerName;
+        return detailId;
     }
 
     public void setProductId(Long productId) 
@@ -161,14 +154,54 @@ public class MesOrder extends BaseEntity
         return productName;
     }
 
-    public void setOrderQuantity(BigDecimal orderQuantity) 
+    public void setWorkshopId(Long workshopId) 
     {
-        this.orderQuantity = orderQuantity;
+        this.workshopId = workshopId;
     }
 
-    public BigDecimal getOrderQuantity() 
+    public Long getWorkshopId() 
     {
-        return orderQuantity;
+        return workshopId;
+    }
+
+    public void setWorkshopName(String workshopName) 
+    {
+        this.workshopName = workshopName;
+    }
+
+    public String getWorkshopName() 
+    {
+        return workshopName;
+    }
+
+    public void setLineId(Long lineId) 
+    {
+        this.lineId = lineId;
+    }
+
+    public Long getLineId() 
+    {
+        return lineId;
+    }
+
+    public void setLineName(String lineName) 
+    {
+        this.lineName = lineName;
+    }
+
+    public String getLineName() 
+    {
+        return lineName;
+    }
+
+    public void setScheduleQuantity(BigDecimal scheduleQuantity) 
+    {
+        this.scheduleQuantity = scheduleQuantity;
+    }
+
+    public BigDecimal getScheduleQuantity() 
+    {
+        return scheduleQuantity;
     }
 
     public void setUnit(String unit) 
@@ -221,60 +254,42 @@ public class MesOrder extends BaseEntity
         return actualEndTime;
     }
 
-    public void setPriority(Long priority) 
+    public void setScheduleStatus(String scheduleStatus) 
     {
-        this.priority = priority;
+        this.scheduleStatus = scheduleStatus;
     }
 
-    public Long getPriority() 
+    public String getScheduleStatus() 
     {
-        return priority;
-    }
-
-    public void setOrderStatus(String orderStatus) 
-    {
-        this.orderStatus = orderStatus;
-    }
-
-    public String getOrderStatus() 
-    {
-        return orderStatus;
-    }
-
-    public List<MesOrderDetail> getMesOrderDetailList()
-    {
-        return mesOrderDetailList;
-    }
-
-    public void setMesOrderDetailList(List<MesOrderDetail> mesOrderDetailList)
-    {
-        this.mesOrderDetailList = mesOrderDetailList;
+        return scheduleStatus;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("scheduleId", getScheduleId())
             .append("orderId", getOrderId())
             .append("orderCode", getOrderCode())
-            .append("customerId", getCustomerId())
-            .append("customerName", getCustomerName())
+            .append("detailId", getDetailId())
             .append("productId", getProductId())
             .append("productCode", getProductCode())
             .append("productName", getProductName())
-            .append("orderQuantity", getOrderQuantity())
+            .append("workshopId", getWorkshopId())
+            .append("workshopName", getWorkshopName())
+            .append("lineId", getLineId())
+            .append("lineName", getLineName())
+            .append("scheduleQuantity", getScheduleQuantity())
             .append("unit", getUnit())
             .append("planStartTime", getPlanStartTime())
             .append("planEndTime", getPlanEndTime())
             .append("actualStartTime", getActualStartTime())
             .append("actualEndTime", getActualEndTime())
-            .append("priority", getPriority())
-            .append("orderStatus", getOrderStatus())
+            .append("scheduleStatus", getScheduleStatus())
             .append("remark", getRemark())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
-            .append("mesOrderDetailList", getMesOrderDetailList())
             .toString();
     }
 }

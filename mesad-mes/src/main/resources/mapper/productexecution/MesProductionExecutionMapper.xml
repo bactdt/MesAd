@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mesad.mes.mapper.MesProductionExecutionMapper">
+    
+    <resultMap type="MesProductionExecution" id="MesProductionExecutionResult">
+        <result property="executionId"    column="execution_id"    />
+        <result property="scheduleId"    column="schedule_id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="orderCode"    column="order_code"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="productName"    column="product_name"    />
+        <result property="workshopId"    column="workshop_id"    />
+        <result property="workshopName"    column="workshop_name"    />
+        <result property="lineId"    column="line_id"    />
+        <result property="lineName"    column="line_name"    />
+        <result property="planQuantity"    column="plan_quantity"    />
+        <result property="actualQuantity"    column="actual_quantity"    />
+        <result property="qualifiedQuantity"    column="qualified_quantity"    />
+        <result property="unqualifiedQuantity"    column="unqualified_quantity"    />
+        <result property="unit"    column="unit"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="executionStatus"    column="execution_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMesProductionExecutionVo">
+        select execution_id, schedule_id, order_id, order_code, product_id, product_code, product_name, workshop_id, workshop_name, line_id, line_name, plan_quantity, actual_quantity, qualified_quantity, unqualified_quantity, unit, start_time, end_time, execution_status, remark, create_by, create_time, update_by, update_time from mes_production_execution
+    </sql>
+
+    <select id="selectMesProductionExecutionList" parameterType="MesProductionExecution" resultMap="MesProductionExecutionResult">
+        <include refid="selectMesProductionExecutionVo"/>
+        <where>  
+            <if test="orderCode != null  and orderCode != ''"> and order_code = #{orderCode}</if>
+            <if test="productCode != null  and productCode != ''"> and product_code = #{productCode}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="workshopName != null  and workshopName != ''"> and workshop_name like concat('%', #{workshopName}, '%')</if>
+            <if test="lineName != null  and lineName != ''"> and line_name like concat('%', #{lineName}, '%')</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="executionStatus != null  and executionStatus != ''"> and execution_status = #{executionStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectMesProductionExecutionByExecutionId" parameterType="Long" resultMap="MesProductionExecutionResult">
+        <include refid="selectMesProductionExecutionVo"/>
+        where execution_id = #{executionId}
+    </select>
+
+    <insert id="insertMesProductionExecution" parameterType="MesProductionExecution" useGeneratedKeys="true" keyProperty="executionId">
+        insert into mes_production_execution
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scheduleId != null">schedule_id,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="orderCode != null and orderCode != ''">order_code,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productCode != null and productCode != ''">product_code,</if>
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="workshopId != null">workshop_id,</if>
+            <if test="workshopName != null and workshopName != ''">workshop_name,</if>
+            <if test="lineId != null">line_id,</if>
+            <if test="lineName != null and lineName != ''">line_name,</if>
+            <if test="planQuantity != null">plan_quantity,</if>
+            <if test="actualQuantity != null">actual_quantity,</if>
+            <if test="qualifiedQuantity != null">qualified_quantity,</if>
+            <if test="unqualifiedQuantity != null">unqualified_quantity,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="executionStatus != null">execution_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="scheduleId != null">#{scheduleId},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="orderCode != null and orderCode != ''">#{orderCode},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productCode != null and productCode != ''">#{productCode},</if>
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="workshopId != null">#{workshopId},</if>
+            <if test="workshopName != null and workshopName != ''">#{workshopName},</if>
+            <if test="lineId != null">#{lineId},</if>
+            <if test="lineName != null and lineName != ''">#{lineName},</if>
+            <if test="planQuantity != null">#{planQuantity},</if>
+            <if test="actualQuantity != null">#{actualQuantity},</if>
+            <if test="qualifiedQuantity != null">#{qualifiedQuantity},</if>
+            <if test="unqualifiedQuantity != null">#{unqualifiedQuantity},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="executionStatus != null">#{executionStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMesProductionExecution" parameterType="MesProductionExecution">
+        update mes_production_execution
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="scheduleId != null">schedule_id = #{scheduleId},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="orderCode != null and orderCode != ''">order_code = #{orderCode},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productCode != null and productCode != ''">product_code = #{productCode},</if>
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="workshopId != null">workshop_id = #{workshopId},</if>
+            <if test="workshopName != null and workshopName != ''">workshop_name = #{workshopName},</if>
+            <if test="lineId != null">line_id = #{lineId},</if>
+            <if test="lineName != null and lineName != ''">line_name = #{lineName},</if>
+            <if test="planQuantity != null">plan_quantity = #{planQuantity},</if>
+            <if test="actualQuantity != null">actual_quantity = #{actualQuantity},</if>
+            <if test="qualifiedQuantity != null">qualified_quantity = #{qualifiedQuantity},</if>
+            <if test="unqualifiedQuantity != null">unqualified_quantity = #{unqualifiedQuantity},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="executionStatus != null">execution_status = #{executionStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where execution_id = #{executionId}
+    </update>
+
+    <delete id="deleteMesProductionExecutionByExecutionId" parameterType="Long">
+        delete from mes_production_execution where execution_id = #{executionId}
+    </delete>
+
+    <delete id="deleteMesProductionExecutionByExecutionIds" parameterType="String">
+        delete from mes_production_execution where execution_id in 
+        <foreach item="executionId" collection="array" open="(" separator="," close=")">
+            #{executionId}
+        </foreach>
+    </delete>
+</mapper>

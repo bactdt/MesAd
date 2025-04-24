@@ -81,8 +81,13 @@ public class MesOrderServiceImpl implements IMesOrderService
     public int updateMesOrder(MesOrder mesOrder)
     {
         mesOrder.setUpdateTime(DateUtils.getNowDate());
-        mesOrderMapper.deleteMesOrderDetailByOrderId(mesOrder.getOrderId());
-        insertMesOrderDetail(mesOrder);
+        // 只有当订单明细列表不为空时才删除并重新插入订单明细
+        List<MesOrderDetail> mesOrderDetailList = mesOrder.getMesOrderDetailList();
+        if (StringUtils.isNotNull(mesOrderDetailList) && !mesOrderDetailList.isEmpty())
+        {
+            mesOrderMapper.deleteMesOrderDetailByOrderId(mesOrder.getOrderId());
+            insertMesOrderDetail(mesOrder);
+        }
         return mesOrderMapper.updateMesOrder(mesOrder);
     }
 
