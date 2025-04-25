@@ -45,7 +45,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="lineName != null  and lineName != ''"> and line_name like concat('%', #{lineName}, '%')</if>
             <if test="startTime != null "> and start_time = #{startTime}</if>
             <if test="endTime != null "> and end_time = #{endTime}</if>
-            <if test="executionStatus != null  and executionStatus != ''"> and execution_status = #{executionStatus}</if>
+<!--            <if test="executionStatus != null  and executionStatus != ''"> -->
+<!--              and execution_status = #{executionStatus}-->
+<!--            </if>-->
         </where>
     </select>
     

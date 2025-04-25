@@ -305,7 +305,6 @@
 <script setup name="Execution">
 import { listExecution, getExecution, delExecution, addExecution, updateExecution } from "@/api/productexecution/execution";
 import {listSchedule} from "@/api/productexecution/schedule";
-import { now } from "@vueuse/core";
 const { proxy } = getCurrentInstance();
 const { mes_production_execution_satus } = proxy.useDict('mes_production_execution_satus');
 
@@ -331,7 +330,7 @@ const data = reactive({
     lineName: null,
     startTime: null,
     endTime: null,
-    executionStatus: 0,
+    executionStatus: "0",
   },
   rules: {
     scheduleId: [

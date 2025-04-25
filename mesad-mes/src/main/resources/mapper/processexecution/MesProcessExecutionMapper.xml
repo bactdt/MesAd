@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mesad.mes.mapper.MesProcessExecutionMapper">
+    
+    <resultMap type="MesProcessExecution" id="MesProcessExecutionResult">
+        <result property="processExecutionId"    column="process_execution_id"    />
+        <result property="executionId"    column="execution_id"    />
+        <result property="processId"    column="process_id"    />
+        <result property="processCode"    column="process_code"    />
+        <result property="processName"    column="process_name"    />
+        <result property="workstationId"    column="workstation_id"    />
+        <result property="workstationCode"    column="workstation_code"    />
+        <result property="workstationName"    column="workstation_name"    />
+        <result property="workerId"    column="worker_id"    />
+        <result property="workerName"    column="worker_name"    />
+        <result property="planQuantity"    column="plan_quantity"    />
+        <result property="actualQuantity"    column="actual_quantity"    />
+        <result property="qualifiedQuantity"    column="qualified_quantity"    />
+        <result property="unqualifiedQuantity"    column="unqualified_quantity"    />
+        <result property="unit"    column="unit"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="processStatus"    column="process_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMesProcessExecutionVo">
+        select process_execution_id, execution_id, process_id, process_code, process_name, workstation_id, workstation_code, workstation_name, worker_id, worker_name, plan_quantity, actual_quantity, qualified_quantity, unqualified_quantity, unit, start_time, end_time, process_status, remark, create_by, create_time, update_by, update_time from mes_process_execution
+    </sql>
+
+    <select id="selectMesProcessExecutionList" parameterType="MesProcessExecution" resultMap="MesProcessExecutionResult">
+        <include refid="selectMesProcessExecutionVo"/>
+        <where>  
+            <if test="processCode != null  and processCode != ''"> and process_code = #{processCode}</if>
+            <if test="processName != null  and processName != ''"> and process_name like concat('%', #{processName}, '%')</if>
+            <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectMesProcessExecutionByProcessExecutionId" parameterType="Long" resultMap="MesProcessExecutionResult">
+        <include refid="selectMesProcessExecutionVo"/>
+        where process_execution_id = #{processExecutionId}
+    </select>
+
+    <insert id="insertMesProcessExecution" parameterType="MesProcessExecution" useGeneratedKeys="true" keyProperty="processExecutionId">
+        insert into mes_process_execution
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="executionId != null">execution_id,</if>
+            <if test="processId != null">process_id,</if>
+            <if test="processCode != null">process_code,</if>
+            <if test="processName != null">process_name,</if>
+            <if test="workstationId != null">workstation_id,</if>
+            <if test="workstationCode != null and workstationCode != ''">workstation_code,</if>
+            <if test="workstationName != null and workstationName != ''">workstation_name,</if>
+            <if test="workerId != null">worker_id,</if>
+            <if test="workerName != null and workerName != ''">worker_name,</if>
+            <if test="planQuantity != null">plan_quantity,</if>
+            <if test="actualQuantity != null">actual_quantity,</if>
+            <if test="qualifiedQuantity != null">qualified_quantity,</if>
+            <if test="unqualifiedQuantity != null">unqualified_quantity,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="processStatus != null">process_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="executionId != null">#{executionId},</if>
+            <if test="processId != null">#{processId},</if>
+            <if test="processCode != null">#{processCode},</if>
+            <if test="processName != null">#{processName},</if>
+            <if test="workstationId != null">#{workstationId},</if>
+            <if test="workstationCode != null and workstationCode != ''">#{workstationCode},</if>
+            <if test="workstationName != null and workstationName != ''">#{workstationName},</if>
+            <if test="workerId != null">#{workerId},</if>
+            <if test="workerName != null and workerName != ''">#{workerName},</if>
+            <if test="planQuantity != null">#{planQuantity},</if>
+            <if test="actualQuantity != null">#{actualQuantity},</if>
+            <if test="qualifiedQuantity != null">#{qualifiedQuantity},</if>
+            <if test="unqualifiedQuantity != null">#{unqualifiedQuantity},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="processStatus != null">#{processStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMesProcessExecution" parameterType="MesProcessExecution">
+        update mes_process_execution
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="executionId != null">execution_id = #{executionId},</if>
+            <if test="processId != null">process_id = #{processId},</if>
+            <if test="processCode != null">process_code = #{processCode},</if>
+            <if test="processName != null">process_name = #{processName},</if>
+            <if test="workstationId != null">workstation_id = #{workstationId},</if>
+            <if test="workstationCode != null and workstationCode != ''">workstation_code = #{workstationCode},</if>
+            <if test="workstationName != null and workstationName != ''">workstation_name = #{workstationName},</if>
+            <if test="workerId != null">worker_id = #{workerId},</if>
+            <if test="workerName != null and workerName != ''">worker_name = #{workerName},</if>
+            <if test="planQuantity != null">plan_quantity = #{planQuantity},</if>
+            <if test="actualQuantity != null">actual_quantity = #{actualQuantity},</if>
+            <if test="qualifiedQuantity != null">qualified_quantity = #{qualifiedQuantity},</if>
+            <if test="unqualifiedQuantity != null">unqualified_quantity = #{unqualifiedQuantity},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="processStatus != null">process_status = #{processStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where process_execution_id = #{processExecutionId}
+    </update>
+
+    <delete id="deleteMesProcessExecutionByProcessExecutionId" parameterType="Long">
+        delete from mes_process_execution where process_execution_id = #{processExecutionId}
+    </delete>
+
+    <delete id="deleteMesProcessExecutionByProcessExecutionIds" parameterType="String">
+        delete from mes_process_execution where process_execution_id in 
+        <foreach item="processExecutionId" collection="array" open="(" separator="," close=")">
+            #{processExecutionId}
+        </foreach>
+    </delete>
+</mapper>

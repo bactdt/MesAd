@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mesad.mes.mapper.MesProductionParameterMapper">
+    
+    <resultMap type="MesProductionParameter" id="MesProductionParameterResult">
+        <result property="parameterId"    column="parameter_id"    />
+        <result property="processExecutionId"    column="process_execution_id"    />
+        <result property="parameterName"    column="parameter_name"    />
+        <result property="parameterCode"    column="parameter_code"    />
+        <result property="parameterValue"    column="parameter_value"    />
+        <result property="standardValue"    column="standard_value"    />
+        <result property="upperLimit"    column="upper_limit"    />
+        <result property="lowerLimit"    column="lower_limit"    />
+        <result property="unit"    column="unit"    />
+        <result property="isQualified"    column="is_qualified"    />
+        <result property="recordTime"    column="record_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMesProductionParameterVo">
+        select parameter_id, process_execution_id, parameter_name, parameter_code, parameter_value, standard_value, upper_limit, lower_limit, unit, is_qualified, record_time, remark, create_by, create_time, update_by, update_time from mes_production_parameter
+    </sql>
+
+    <select id="selectMesProductionParameterList" parameterType="MesProductionParameter" resultMap="MesProductionParameterResult">
+        <include refid="selectMesProductionParameterVo"/>
+        <where>  
+            <if test="parameterName != null  and parameterName != ''"> and parameter_name like concat('%', #{parameterName}, '%')</if>
+            <if test="upperLimit != null  and upperLimit != ''"> and upper_limit = #{upperLimit}</if>
+            <if test="lowerLimit != null  and lowerLimit != ''"> and lower_limit = #{lowerLimit}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+        </where>
+    </select>
+    
+    <select id="selectMesProductionParameterByParameterId" parameterType="Long" resultMap="MesProductionParameterResult">
+        <include refid="selectMesProductionParameterVo"/>
+        where parameter_id = #{parameterId}
+    </select>
+
+    <insert id="insertMesProductionParameter" parameterType="MesProductionParameter" useGeneratedKeys="true" keyProperty="parameterId">
+        insert into mes_production_parameter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="processExecutionId != null">process_execution_id,</if>
+            <if test="parameterName != null and parameterName != ''">parameter_name,</if>
+            <if test="parameterCode != null and parameterCode != ''">parameter_code,</if>
+            <if test="parameterValue != null and parameterValue != ''">parameter_value,</if>
+            <if test="standardValue != null">standard_value,</if>
+            <if test="upperLimit != null">upper_limit,</if>
+            <if test="lowerLimit != null">lower_limit,</if>
+            <if test="unit != null">unit,</if>
+            <if test="isQualified != null">is_qualified,</if>
+            <if test="recordTime != null">record_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="processExecutionId != null">#{processExecutionId},</if>
+            <if test="parameterName != null and parameterName != ''">#{parameterName},</if>
+            <if test="parameterCode != null and parameterCode != ''">#{parameterCode},</if>
+            <if test="parameterValue != null and parameterValue != ''">#{parameterValue},</if>
+            <if test="standardValue != null">#{standardValue},</if>
+            <if test="upperLimit != null">#{upperLimit},</if>
+            <if test="lowerLimit != null">#{lowerLimit},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="isQualified != null">#{isQualified},</if>
+            <if test="recordTime != null">#{recordTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMesProductionParameter" parameterType="MesProductionParameter">
+        update mes_production_parameter
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="processExecutionId != null">process_execution_id = #{processExecutionId},</if>
+            <if test="parameterName != null and parameterName != ''">parameter_name = #{parameterName},</if>
+            <if test="parameterCode != null and parameterCode != ''">parameter_code = #{parameterCode},</if>
+            <if test="parameterValue != null and parameterValue != ''">parameter_value = #{parameterValue},</if>
+            <if test="standardValue != null">standard_value = #{standardValue},</if>
+            <if test="upperLimit != null">upper_limit = #{upperLimit},</if>
+            <if test="lowerLimit != null">lower_limit = #{lowerLimit},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="isQualified != null">is_qualified = #{isQualified},</if>
+            <if test="recordTime != null">record_time = #{recordTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where parameter_id = #{parameterId}
+    </update>
+
+    <delete id="deleteMesProductionParameterByParameterId" parameterType="Long">
+        delete from mes_production_parameter where parameter_id = #{parameterId}
+    </delete>
+
+    <delete id="deleteMesProductionParameterByParameterIds" parameterType="String">
+        delete from mes_production_parameter where parameter_id in 
+        <foreach item="parameterId" collection="array" open="(" separator="," close=")">
+            #{parameterId}
+        </foreach>
+    </delete>
+</mapper>
