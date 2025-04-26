@@ -89,19 +89,24 @@
       <el-table-column label="操作工姓名" align="center" prop="workerName" />
       <el-table-column label="计划生产数" align="center" prop="planQuantity" />
       <el-table-column label="实际生产数" align="center" prop="actualQuantity" />
-      <el-table-column label="合格数量" align="center" prop="qualifiedQuantity" />
-      <el-table-column label="不合格数量" align="center" prop="unqualifiedQuantity" />
       <el-table-column label="单位" align="center" prop="unit" />
       <el-table-column label="工序状态" align="center" prop="processStatus">
         <template #default="scope">
           <dict-tag :options="mes_production_execution_satus" :value="scope.row.processStatus"/>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['processexecution:processexecution:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['processexecution:processexecution:remove']">删除</el-button>
+          <el-switch
+            v-model="scope.row.processStatus"
+            active-value="3"
+            inactive-value="0"
+            active-text="已完成"
+            inactive-text="进行中"
+            active-color="#13ce66"
+            inactive-color="#409EFF"
+            @change="handleStatusChange(scope.row)"
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -115,79 +120,119 @@
     />
 
     <!-- 添加或修改生产工序执行对话框 -->
-    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="processexecutionRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="生产执行ID" prop="executionId">
-          <el-input v-model="form.executionId" placeholder="请输入生产执行ID" />
-        </el-form-item>
-        <el-form-item label="工序ID" prop="processId">
-          <el-input v-model="form.processId" placeholder="请输入工序ID" />
-        </el-form-item>
-        <el-form-item label="工序编码" prop="processCode">
-          <el-input v-model="form.processCode" placeholder="请输入工序编码" />
-        </el-form-item>
-        <el-form-item label="工序名称" prop="processName">
-          <el-input v-model="form.processName" placeholder="请输入工序名称" />
-        </el-form-item>
-        <el-form-item label="工位ID" prop="workstationId">
-          <el-input v-model="form.workstationId" placeholder="请输入工位ID" />
-        </el-form-item>
-        <el-form-item label="工位编码" prop="workstationCode">
-          <el-input v-model="form.workstationCode" placeholder="请输入工位编码" />
-        </el-form-item>
-        <el-form-item label="工位名称" prop="workstationName">
-          <el-input v-model="form.workstationName" placeholder="请输入工位名称" />
-        </el-form-item>
-        <el-form-item label="操作工ID" prop="workerId">
-          <el-input v-model="form.workerId" placeholder="请输入操作工ID" />
-        </el-form-item>
-        <el-form-item label="操作工姓名" prop="workerName">
-          <el-input v-model="form.workerName" placeholder="请输入操作工姓名" />
-        </el-form-item>
-        <el-form-item label="计划生产数" prop="planQuantity">
-          <el-input v-model="form.planQuantity" placeholder="请输入计划生产数" />
-        </el-form-item>
-        <el-form-item label="实际生产数" prop="actualQuantity">
-          <el-input v-model="form.actualQuantity" placeholder="请输入实际生产数" />
-        </el-form-item>
-        <el-form-item label="合格数量" prop="qualifiedQuantity">
-          <el-input v-model="form.qualifiedQuantity" placeholder="请输入合格数量" />
-        </el-form-item>
-        <el-form-item label="不合格数量" prop="unqualifiedQuantity">
-          <el-input v-model="form.unqualifiedQuantity" placeholder="请输入不合格数量" />
-        </el-form-item>
-        <el-form-item label="单位" prop="unit">
-          <el-input v-model="form.unit" placeholder="请输入单位" />
-        </el-form-item>
-        <el-form-item label="开始时间" prop="startTime">
-          <el-date-picker clearable
-            v-model="form.startTime"
-            type="date"
-            value-format="YYYY-MM-DD"
-            placeholder="请选择开始时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="结束时间" prop="endTime">
-          <el-date-picker clearable
-            v-model="form.endTime"
-            type="date"
-            value-format="YYYY-MM-DD"
-            placeholder="请选择结束时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="工序状态" prop="processStatus">
-          <el-select v-model="form.processStatus" placeholder="请选择工序状态">
-            <el-option
-              v-for="dict in mes_production_execution_satus"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
+    <el-dialog :title="title" v-model="open" width="800px" append-to-body>
+      <el-form ref="processexecutionRef" :model="form" :rules="rules" label-width="100px">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="生产执行ID" prop="executionId">
+              <el-select v-model="form.executionId" placeholder="请选择生产执行ID" style="width: 100%" @change="handleExecutionChange">
+                <el-option
+                  v-for="item in executionOptions"
+                  :key="item.executionId"
+                  :label="item.executionId + ' - ' + (item.productCode || '')"
+                  :value="item.executionId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工序ID" prop="processId">
+              <el-input v-model="form.processId" placeholder="请输入工序ID" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工序编码" prop="processCode">
+              <el-input v-model="form.processCode" placeholder="请输入工序编码" disabled/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工序名称" prop="processName">
+              <el-input v-model="form.processName" placeholder="请输入工序名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工位ID" prop="workstationId">
+              <el-input v-model="form.workstationId" placeholder="请输入工位ID" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工位编码" prop="workstationCode">
+              <el-input v-model="form.workstationCode" placeholder="请输入工位编码" disabled/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工位名称" prop="workstationName">
+              <el-input v-model="form.workstationName" placeholder="请输入工位名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="操作工ID" prop="workerId">
+              <el-input v-model="form.workerId" placeholder="请输入操作工ID" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="操作工姓名" prop="workerName">
+              <el-input v-model="form.workerName" placeholder="请输入操作工姓名" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="计划生产数" prop="planQuantity">
+              <el-input v-model="form.planQuantity" placeholder="请输入计划生产数" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="实际生产数" prop="actualQuantity">
+              <el-input v-model="form.actualQuantity" placeholder="请输入实际生产数" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="合格数量" prop="qualifiedQuantity">
+              <el-input v-model="form.qualifiedQuantity" placeholder="请输入合格数量" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="不合格数量" prop="unqualifiedQuantity">
+              <el-input v-model="form.unqualifiedQuantity" placeholder="请输入不合格数量" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="单位" prop="unit">
+              <el-input v-model="form.unit" placeholder="请输入单位" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="开始时间" prop="startTime">
+              <el-date-picker clearable
+                v-model="form.startTime"
+                type="date"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择开始时间"
+                style="width: 100%">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="结束时间" prop="endTime">
+              <el-date-picker clearable
+                v-model="form.endTime"
+                type="date"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择结束时间"
+                style="width: 100%">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工序状态" prop="processStatus">
+              
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="备注" prop="remark">
+              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -201,6 +246,7 @@
 
 <script setup name="Processexecution">
 import { listProcessexecution, getProcessexecution, delProcessexecution, addProcessexecution, updateProcessexecution } from "@/api/processexecution/processexecution";
+import { listExecution,updateExecution } from "@/api/productexecution/execution";
 
 const { proxy } = getCurrentInstance();
 const { mes_production_execution_satus } = proxy.useDict('mes_production_execution_satus');
@@ -228,9 +274,6 @@ const data = reactive({
     workstationId: [
       { required: true, message: "工位ID不能为空", trigger: "blur" }
     ],
-    workstationCode: [
-      { required: true, message: "工位编码不能为空", trigger: "blur" }
-    ],
     workstationName: [
       { required: true, message: "工位名称不能为空", trigger: "blur" }
     ],
@@ -243,6 +286,9 @@ const data = reactive({
     unit: [
       { required: true, message: "单位不能为空", trigger: "blur" }
     ],
+    planQuantity: [
+      { required: true, message: "计划生产数不能为空", trigger: "blur" }
+    ]
   }
 });
 
@@ -333,6 +379,15 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
+  // 确保工序编码有值
+  if (!form.value.processCode && form.value.processId) {
+    // 如果没有工序编码但有工序ID，可以生成一个临时编码
+    form.value.processCode = "GXBM" +  Math.round(Math.random()*9) ;
+  }
+  if (!form.value.workstationCode) {
+    form.value.workstationCode = "GWBM" +  Math.round(Math.random()*3) ;
+  }
+  
   proxy.$refs["processexecutionRef"].validate(valid => {
     if (valid) {
       if (form.value.processExecutionId != null) {
@@ -371,4 +426,56 @@ function handleExport() {
 }
 
 getList();
+// 生产执行选项列表
+const executionOptions = ref([]);
+
+/** 查询生产执行列表 */
+function getExecutionList() {
+  listExecution().then(response => {
+    executionOptions.value = response.rows;
+  });
+}
+
+// 在页面加载时获取生产执行列表
+onMounted(() => {
+  getExecutionList();
+});
+/** 处理生产执行ID选择变更 */
+function handleExecutionChange(val) {
+  if (val) {
+    // 查找选中的生产执行记录
+    const selectedExecution = executionOptions.value.find(item => item.executionId === val);
+    if (selectedExecution) {
+      // 将单位信息同步到表单
+      form.value.unit = selectedExecution.unit;
+    }
+  }
+}
+
+/** 处理工序状态变更 */
+function handleStatusChange(row) {
+  const text = row.processStatus === "3" ? "已完成" : "进行中";
+  updateProcessexecution(row).then(response => {
+    proxy.$modal.msgSuccess(`状态已更新为${text}`);
+    getList();
+  }).catch(() => {
+    // 如果更新失败，恢复原状态
+    row.processStatus = row.processStatus === "3" ? "0" : "3";
+  });
+  
+  // 修复条件判断，使用 === 而不是 =
+  if (row.processStatus === "3") {
+    // 当状态为已完成时，更新实际生产数
+    // 创建一个符合后端期望的对象
+    const executionData = {
+      executionId: row.executionId,
+      executionStatus: row.processStatus 
+    };
+    updateExecution(executionData).then(response => {
+      console.log("生产执行状态更新成功",executionData.executionId,executionData.executionStatus);
+    }).catch(error => {
+      console.error("生产执行状态更新失败:", error);
+    });
+  }
+}
 </script>

@@ -1,7 +1,10 @@
 package cn.mesad.mes.service.impl;
 
 import java.util.List;
+import java.util.Random;
+
 import cn.mesad.common.utils.DateUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.mesad.mes.mapper.MesProcessExecutionMapper;
@@ -54,6 +57,9 @@ public class MesProcessExecutionServiceImpl implements IMesProcessExecutionServi
     public int insertMesProcessExecution(MesProcessExecution mesProcessExecution)
     {
         mesProcessExecution.setCreateTime(DateUtils.getNowDate());
+        if(mesProcessExecution.getProcessCode().isEmpty()){
+            mesProcessExecution.setProcessCode("PRC" + RandomStringUtils.randomNumeric(9));
+        }
         return mesProcessExecutionMapper.insertMesProcessExecution(mesProcessExecution);
     }
 
