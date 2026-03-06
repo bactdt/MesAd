@@ -1,5 +1,7 @@
 # MesAd - Manufacturing Execution System
 
+[中文文档](./README.zh-CN.md)
+
 A MES (Manufacturing Execution System) admin platform built on top of [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue).
 
 ## Tech Stack
@@ -30,6 +32,7 @@ MesAd
 - [X] Product management
 - [X] Production execution
 - [X] Auto-generated serial numbers
+- [X] Production reports (CRUD, export)
 - [ ] Quality management (WIP)
 
 ## Getting Started
@@ -70,7 +73,6 @@ npm run build:prod
 ## TODO
 
 - [ ] Quality management module
-- [ ] More production reports
 
 ---
 
